@@ -101,6 +101,53 @@ only 39% of faults ever alert, so localization accuracy is moot for the other 61
 (Sweep recall is lower than the headline because it runs 1h at 8 rps — fewer
 samples per bucket — versus 2h at 10 rps.)
 
+### The real stack — small n, stated as such
+
+The same analyzer, unchanged, run on **142,846 real spans** from the 7-container
+stack: actual .NET and Python processes, real HTTP between them, spans collected by
+a real OpenTelemetry Collector, faults injected into the services themselves via
+`/admin/fault`. `eval/results/real_stack.json`.
+
+| | value |
+|---|---|
+| spans converted from collector output | 142,846 (61,966 server / 80,880 client) |
+| client spans carrying `peer.service` | 80,880 (100%) |
+| services observed / edges derived | 7 / 7 — matches `small.yaml` exactly |
+| fault groups detected | 4 / 8 (50% recall) |
+
+| method | top-1 (n=4) |
+|---|---|
+| `naive_inclusive` | 75.0% |
+| `self_time` | 75.0% |
+| `attributed` | 100% |
+
+**n=4 is far too small to claim anything from.** It is reported because it shows
+the pipeline works end to end on genuine cross-process, cross-language telemetry,
+and because the one discriminating case reproduces the synthetic finding: on the
+two `error` faults, `naive`/`self_time` got 50% and `attributed` got 100%.
+Detection recall is also much worse than synthetic (50% vs 90%) — a 7-minute run
+gives the median/MAD baseline far fewer buckets to work with. The statistical
+claims in this README come from the synthetic track; this track is an
+integration proof.
+
+### Azure — verified, not just deployed
+
+All seven services running on Container Apps, traces reaching Application Insights
+through the collector's `azuremonitor` exporter. Confirmed by querying App
+Insights directly:
+
+```
+cloud_RoleName    spans
+recommender        3175
+inventory          3171
+gateway            2393
+orders             2392
+payments           1594
+```
+
+`ledger` and `cache` correctly appear only as dependency targets, never as roles —
+they emit no server spans, which is the whole point of them.
+
 ### Detector operating curve
 
 Threshold is an explicit tradeoff, not a magic constant. `make detection-curve`:
@@ -307,6 +354,19 @@ separated the methods.
 capped by whether the incident alerted at all. At full severity 9.6% of faults
 never alert; at scale 0.1, 61% never do.
 
+**Two silent-telemetry-loss bugs on Container Apps.** Both had the same shape: the
+application keeps serving traffic normally and nothing logs an error, while traces
+go nowhere.
+1. ACA ingress listens on 80/443 and forwards to `targetPort`, so the collector
+   must be addressed on port 80. Pointing services at `:4317` produced a fully
+   healthy-looking deployment with an empty Application Insights.
+2. With the port then omitted entirely, the .NET exporter inferred 80 but the
+   Python OTLP **gRPC** exporter defaulted to 4317 — so exactly one service went
+   missing. Stating `:80` explicitly fixed it.
+
+Worth noting because both were invisible from the app's own health signals; only
+querying the telemetry backend revealed them.
+
 ---
 
 ## Limitations
@@ -318,6 +378,9 @@ Stated plainly, because a reviewer will find these anyway:
   severity sweep) that a laptop-scale real stack can't. The real Docker/Azure track
   proves the OTel pipeline and analyzer work on genuine cross-process,
   cross-language telemetry — it is not run at that scale.
+- **The real-stack run is n=4.** Enough to demonstrate the pipeline end to end,
+  nowhere near enough to support an accuracy claim. Every number worth quoting
+  comes from the synthetic track.
 - **Datastore nodes are stand-ins.** `ledger` and `cache` run the same service
   image with server spans suppressed to imitate uninstrumented Postgres/Redis.
   They are not real datastores, and no real query or eviction behaviour is modeled.

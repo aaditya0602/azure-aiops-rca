@@ -236,7 +236,14 @@ resource collector 'Microsoft.App/containerApps@2024-03-01' = if (deployApps) {
   }
 }
 
-var collectorEndpoint = 'http://${namePrefix}-otel-collector.internal.${domain}:4317'
+// Container Apps ingress listens on 80/443 and forwards to targetPort, so callers
+// address the FQDN on port 80 -- NOT :4317. Pointing at :4317 reaches nothing and
+// the exporter fails silently while the app keeps serving traffic normally.
+//
+// The port is stated explicitly because the Python OTLP *gRPC* exporter defaults
+// to 4317 when the endpoint carries no port, which silently drops that service's
+// traces. The .NET exporter infers 80 either way.
+var collectorEndpoint = 'http://${namePrefix}-otel-collector.internal.${domain}:80'
 
 // --- topology ----------------------------------------------------------------
 

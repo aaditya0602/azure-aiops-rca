@@ -1,0 +1,315 @@
+{
+  "config": {
+    "spans": "data\\real\\spans.jsonl",
+    "labels": "data\\real\\injections.jsonl",
+    "topology": "topology\\small.yaml",
+    "bucket_ms": 5000.0,
+    "detect_threshold": 3.0,
+    "n_spans": 142846,
+    "n_services_observed": 7,
+    "n_edges_derived": 7
+  },
+  "detection": {
+    "n_groups_injected": 8,
+    "n_groups_detected": 4,
+    "recall_pct": 50.0,
+    "false_positive_incidents": 1,
+    "mttd_s_mean": 1.9,
+    "mttd_s_p95": 0.0
+  },
+  "single": {
+    "n": 4,
+    "overall": {
+      "naive_inclusive": {
+        "top1_pct": 75.0,
+        "top3_pct": 100.0
+      },
+      "self_time": {
+        "top1_pct": 75.0,
+        "top3_pct": 100.0
+      },
+      "attributed": {
+        "top1_pct": 100.0,
+        "top3_pct": 100.0
+      },
+      "graph": {
+        "top1_pct": 100.0,
+        "top3_pct": 100.0
+      }
+    },
+    "by_kind": {
+      "dep_fail": {
+        "n": 1,
+        "naive_inclusive": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "self_time": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "error": {
+        "n": 2,
+        "naive_inclusive": {
+          "top1_pct": 50.0,
+          "top3_pct": 100.0
+        },
+        "self_time": {
+          "top1_pct": 50.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "memleak": {
+        "n": 1,
+        "naive_inclusive": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "self_time": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      }
+    }
+  },
+  "concurrent": {
+    "n": 0,
+    "overall": {
+      "naive_inclusive": {
+        "both_top2_pct": null,
+        "both_top3_pct": null
+      },
+      "self_time": {
+        "both_top2_pct": null,
+        "both_top3_pct": null
+      },
+      "attributed": {
+        "both_top2_pct": null,
+        "both_top3_pct": null
+      },
+      "graph": {
+        "both_top2_pct": null,
+        "both_top3_pct": null
+      }
+    }
+  },
+  "cases": [
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "payments"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "gateway"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "gateway"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "cache",
+            "gateway"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "cache",
+            "gateway"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "recommender"
+      ],
+      "detect_delay_s": 7.7,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "gateway",
+            "cache"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "cache",
+            "ledger"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "cache",
+            "ledger"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "gateway",
+            "cache"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "cache"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cache",
+            "inventory",
+            "gateway"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cache",
+            "inventory",
+            "gateway"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cache",
+            "recommender",
+            "gateway"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cache",
+            "inventory",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "inventory"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "gateway",
+            "inventory",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "gateway",
+            "inventory",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "cache",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "cache",
+            "gateway"
+          ]
+        }
+      }
+    }
+  ]
+}
