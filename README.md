@@ -200,7 +200,7 @@ python -m venv .venv && .venv/bin/pip install -r requirements.txt -r requirement
 make verify
 ```
 
-`verify` runs 25 unit tests, then generates a seeded scenario and asserts both an
+`verify` runs 32 unit tests, then generates a seeded scenario and asserts both an
 absolute floor (attributed top-1 ≥ 90%) **and** a margin over the baseline
 (≥ 15 points). The margin check is the important one: if error attribution
 silently breaks, `attributed` collapses onto `self_time` and an absolute-only gate
@@ -263,7 +263,9 @@ The gate applies five checks and **refuses by default**:
 Anything failing a check is dropped and the proposal degrades to diagnosis-only,
 which is always safe to show a human. 14 gate tests cover each refusal path —
 including that `rb-payments-errors-v3` forbids restarting payments, because
-in-flight authorizations aren't idempotent and a restart can double-charge.
+in-flight authorizations aren't idempotent and a restart can double-charge — plus
+7 orchestration tests covering evidence assembly, fenced-JSON extraction, and
+graceful degradation when the model returns something unparseable.
 
 Providers are pluggable: **z.ai GLM** (dev default), **Azure AI Foundry**, or
 **cassette** replay of recorded responses so the pipeline is deterministic and CI
@@ -334,5 +336,6 @@ runbooks/     markdown + YAML frontmatter the gate machine-checks
 infra/        main.bicep — Log Analytics, App Insights, ACR, Container Apps
 topology/     topology.yaml (18-node study), small.yaml (7-node real stack)
 eval/results/ committed results — the numbers above are reproducible from these
-tests/        25 tests: determinism, graph derivation, attribution, gate refusals
+tests/        32 tests: determinism, graph derivation, attribution, gate refusals,
+              triage orchestration
 ```
