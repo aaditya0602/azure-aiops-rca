@@ -233,9 +233,17 @@ pwsh ./scripts/deploy-azure.ps1 -SubscriptionId <your-sub-id>
 ```
 
 Three phases: Bicep provisions Log Analytics / Application Insights / ACR /
-Container Apps environment → `az acr build` builds both images **server-side** (no
-local Docker needed) → Bicep deploys the collector and topology. Traces land in
-Application Insights via the collector's `azuremonitor` exporter.
+Container Apps environment → both images are built and pushed to ACR → Bicep
+deploys the collector and topology. Traces land in Application Insights via the
+collector's `azuremonitor` exporter.
+
+**Azure for Students cannot use server-side ACR builds.** `az acr build` returns
+`TasksOperationsNotAllowed` on that subscription type — the registry works, ACR
+*Tasks* is what's blocked. So images are built locally (Docker required) and
+pushed. On a subscription where Tasks is permitted, `-UseAcrTasks` skips the local
+build. The script verifies both images are actually in the registry before
+deploying, because Container Apps will happily accept a reference to an image that
+does not exist and then fail to pull.
 
 ```bash
 pwsh ./scripts/destroy-azure.ps1 -SubscriptionId <your-sub-id>
