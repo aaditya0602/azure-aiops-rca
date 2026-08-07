@@ -1,0 +1,8 @@
+# Without this, `COPY . .` overwrites the container's restored obj/ with the host's,
+# whose project.assets.json points at Windows NuGet paths. `dotnet publish
+# --no-restore` then fails with NETSDK1064 "package was not found". This applies
+# equally to `az acr build`, which uploads the same local context.
+bin/
+obj/
+*.user
+.vs/
