@@ -48,6 +48,12 @@ detection-curve:
 test:
 	$(PY) -m pytest -q tests/
 
+# Triage the detected incidents. Offline by default (cassette replay).
+# Live: make triage PROVIDER=zai   — needs ZAI_API_KEY.
+PROVIDER ?= cassette
+triage:
+	$(PY) agent/run.py --provider $(PROVIDER) --threshold $(THRESHOLD) --limit 5
+
 # The CI gate: unit tests, then a seeded end-to-end run that must clear both an
 # absolute accuracy floor AND a margin over the baseline. Fully offline — no
 # Docker, no Azure, no LLM key.
