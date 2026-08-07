@@ -1,0 +1,41 @@
+# Azure pipeline: services -> OTLP -> collector -> Application Insights.
+#
+# No file exporter here: Container Apps replicas have no durable local disk, so a
+# file sink would silently discard data on restart. The local pipeline
+# (collector-local.yaml) is the one that writes JSONL for the analyzer.
+#
+# APPLICATIONINSIGHTS_CONNECTION_STRING is injected as a Container Apps secret
+# sourced from the App Insights resource; it is never committed. See
+# infra/main.bicep.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: azure-container-apps
+        action: upsert
+
+exporters:
+  azuremonitor:
+    connection_string: ${env:APPLICATIONINSIGHTS_CONNECTION_STRING}
+
+service:
+  telemetry:
+    logs:
+      level: warn
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [azuremonitor]

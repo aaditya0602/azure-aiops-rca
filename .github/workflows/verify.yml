@@ -1,0 +1,88 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  eval-gate:
+    name: tests + seeded accuracy gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Unit tests
+        run: python -m pytest -q tests/
+
+      # Fixed seed, so both the accuracy number and the margin over the baseline
+      # are exactly reproducible. Fully offline: no Docker, no Azure, no LLM key.
+      - name: Generate seeded scenario with ground truth
+        run: |
+          python harness/synth.py --seed 1337 --duration 1800 --rps 8 \
+            --faults 40 --p-concurrent 0.35 \
+            --out-spans data/ci/spans.jsonl --out-labels data/ci/injections.jsonl
+
+      - name: Accuracy gate
+        run: |
+          python analyzer/eval.py \
+            --spans data/ci/spans.jsonl --labels data/ci/injections.jsonl \
+            --threshold 3.0 --gate-method attributed \
+            --assert-top1 90 --assert-beats self_time:15 \
+            --out eval/results/ci.json
+
+      - name: Upload eval result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-result
+          path: eval/results/ci.json
+
+  dotnet:
+    name: build .NET service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build
+        run: dotnet build services/node/Node.csproj -warnaserror
+      # Fails the build on any package with a known advisory, so a vulnerable
+      # transitive dependency cannot land silently.
+      - name: Audit NuGet dependencies
+        run: |
+          dotnet list services/node/Node.csproj package --vulnerable --include-transitive \
+            > audit.txt 2>&1 || true
+          cat audit.txt
+          if grep -qiE 'Critical|High|Moderate' audit.txt; then
+            echo "::error::vulnerable NuGet package detected"
+            exit 1
+          fi
+
+  bicep:
+    name: validate Bicep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile template
+        run: az bicep build --file infra/main.bicep --outfile /tmp/main.json
+      - name: Fail on Bicep warnings
+        run: |
+          out=$(az bicep build --file infra/main.bicep --stdout 2>&1 >/dev/null || true)
+          echo "$out"
+          if echo "$out" | grep -q 'BCP'; then
+            echo "::error::Bicep emitted diagnostics"
+            exit 1
+          fi

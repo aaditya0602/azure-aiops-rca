@@ -1,0 +1,32 @@
+# Local pipeline: services -> OTLP -> collector -> newline-delimited OTLP JSON.
+# harness/otlp_to_spans.py converts that into the analyzer's span schema, so the
+# analyzer consumes real collector output rather than anything bespoke.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 2s
+    send_batch_size: 1024
+
+exporters:
+  file:
+    path: /out/otlp-spans.jsonl
+  debug:
+    verbosity: basic
+
+service:
+  telemetry:
+    logs:
+      level: warn
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [file]

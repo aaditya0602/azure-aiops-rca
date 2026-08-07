@@ -1,0 +1,65 @@
+{
+  "spans": "data/synth/spans.jsonl",
+  "rows": [
+    {
+      "threshold": 1.5,
+      "recall_pct": 100.0,
+      "false_positive_incidents": 70,
+      "mttd_s_mean": 2.6,
+      "n_single": 56,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    },
+    {
+      "threshold": 2.0,
+      "recall_pct": 95.2,
+      "false_positive_incidents": 46,
+      "mttd_s_mean": 2.3,
+      "n_single": 52,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    },
+    {
+      "threshold": 2.5,
+      "recall_pct": 94.0,
+      "false_positive_incidents": 19,
+      "mttd_s_mean": 3.4,
+      "n_single": 51,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    },
+    {
+      "threshold": 3.0,
+      "recall_pct": 90.4,
+      "false_positive_incidents": 6,
+      "mttd_s_mean": 4.1,
+      "n_single": 48,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    },
+    {
+      "threshold": 3.5,
+      "recall_pct": 84.3,
+      "false_positive_incidents": 2,
+      "mttd_s_mean": 4.7,
+      "n_single": 43,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    },
+    {
+      "threshold": 5.0,
+      "recall_pct": 73.5,
+      "false_positive_incidents": 4,
+      "mttd_s_mean": 2.8,
+      "n_single": 34,
+      "n_concurrent": 27,
+      "attributed_top1_pct": 100.0,
+      "graph_top1_pct": 100.0
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+# Real 7-node stack matching topology/small.yaml.
+#
+# ledger and cache run the same image with EMIT_SERVER_SPANS=false, so they are
+# visible only through their caller's client span -- standing in for
+# uninstrumented Postgres/Redis. That is a stated simplification: they are
+# stand-ins, not real datastores. The 18-node study in topology/topology.yaml is
+# synthetic; this stack is what proves the OTel pipeline and analyzer work on
+# genuine cross-process, cross-language telemetry.
+
+x-node: &node
+  build:
+    context: ./services/node
+  environment: &node-env
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+    BASE_ERROR_RATE: "0.002"
+    ERROR_PROPAGATION: "0.85"
+  depends_on:
+    otel-collector:
+      condition: service_started
+  restart: unless-stopped
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.109.0
+    command: ["--config=/etc/otel/collector.yaml"]
+    volumes:
+      - ./otel/collector-local.yaml:/etc/otel/collector.yaml:ro
+      - ./data/otlp:/out
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+
+  gateway:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: gateway
+      BASE_LATENCY_MS: "4.0"
+      LATENCY_SIGMA: "0.35"
+      DOWNSTREAM: "orders=http://orders:8080,recommender=http://recommender:8080"
+    ports:
+      - "8080:8080"
+
+  orders:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: orders
+      BASE_LATENCY_MS: "6.0"
+      LATENCY_SIGMA: "0.40"
+      DOWNSTREAM: "payments=http://payments:8080,inventory=http://inventory:8080"
+
+  payments:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: payments
+      BASE_LATENCY_MS: "8.0"
+      LATENCY_SIGMA: "0.45"
+      DOWNSTREAM: "ledger=http://ledger:8080"
+
+  inventory:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: inventory
+      BASE_LATENCY_MS: "5.0"
+      LATENCY_SIGMA: "0.35"
+      DOWNSTREAM: "cache=http://cache:8080"
+
+  # --- uninstrumented stand-ins: no server spans of their own ---
+  ledger:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: ledger
+      BASE_LATENCY_MS: "9.0"
+      LATENCY_SIGMA: "0.50"
+      EMIT_SERVER_SPANS: "false"
+      DOWNSTREAM: ""
+
+  cache:
+    <<: *node
+    environment:
+      <<: *node-env
+      SERVICE_NAME: cache
+      BASE_LATENCY_MS: "1.2"
+      LATENCY_SIGMA: "0.30"
+      EMIT_SERVER_SPANS: "false"
+      DOWNSTREAM: ""
+
+  # --- Python node, so traces cross a language boundary ---
+  recommender:
+    build:
+      context: ./services/recommender
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      SERVICE_NAME: recommender
+      BASE_LATENCY_MS: "22.0"
+      LATENCY_SIGMA: "0.55"
+      BASE_ERROR_RATE: "0.002"
+      ERROR_PROPAGATION: "0.85"
+      DOWNSTREAM: "inventory=http://inventory:8080"
+    depends_on:
+      otel-collector:
+        condition: service_started
+    restart: unless-stopped

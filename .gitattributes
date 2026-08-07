@@ -1,0 +1,8 @@
+# Normalize to LF in the repo. The stack builds in Linux containers and CI runs on
+# ubuntu, so CRLF in a shell script or Dockerfile breaks at runtime.
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.png binary
+*.gif binary
+*.jpg binary

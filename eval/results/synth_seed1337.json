@@ -1,0 +1,3815 @@
+{
+  "config": {
+    "spans": "data/synth/spans.jsonl",
+    "labels": "data/synth/injections.jsonl",
+    "topology": "topology/topology.yaml",
+    "bucket_ms": 5000.0,
+    "detect_threshold": 3.0,
+    "n_spans": 2682354,
+    "n_services_observed": 18,
+    "n_edges_derived": 24
+  },
+  "detection": {
+    "n_groups_injected": 83,
+    "n_groups_detected": 75,
+    "recall_pct": 90.4,
+    "false_positive_incidents": 6,
+    "mttd_s_mean": 4.1,
+    "mttd_s_p95": 24.1
+  },
+  "single": {
+    "n": 48,
+    "overall": {
+      "naive_inclusive": {
+        "top1_pct": 72.9,
+        "top3_pct": 85.4
+      },
+      "self_time": {
+        "top1_pct": 79.2,
+        "top3_pct": 91.7
+      },
+      "attributed": {
+        "top1_pct": 100.0,
+        "top3_pct": 100.0
+      },
+      "graph": {
+        "top1_pct": 100.0,
+        "top3_pct": 100.0
+      }
+    },
+    "by_kind": {
+      "cpu": {
+        "n": 5,
+        "naive_inclusive": {
+          "top1_pct": 80.0,
+          "top3_pct": 80.0
+        },
+        "self_time": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "dep_fail": {
+        "n": 10,
+        "naive_inclusive": {
+          "top1_pct": 60.0,
+          "top3_pct": 90.0
+        },
+        "self_time": {
+          "top1_pct": 60.0,
+          "top3_pct": 90.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "error": {
+        "n": 12,
+        "naive_inclusive": {
+          "top1_pct": 50.0,
+          "top3_pct": 75.0
+        },
+        "self_time": {
+          "top1_pct": 50.0,
+          "top3_pct": 75.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "latency": {
+        "n": 10,
+        "naive_inclusive": {
+          "top1_pct": 80.0,
+          "top3_pct": 80.0
+        },
+        "self_time": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      },
+      "memleak": {
+        "n": 11,
+        "naive_inclusive": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "self_time": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "attributed": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        },
+        "graph": {
+          "top1_pct": 100.0,
+          "top3_pct": 100.0
+        }
+      }
+    }
+  },
+  "concurrent": {
+    "n": 27,
+    "overall": {
+      "naive_inclusive": {
+        "both_top2_pct": 37.0,
+        "both_top3_pct": 77.8
+      },
+      "self_time": {
+        "both_top2_pct": 63.0,
+        "both_top3_pct": 92.6
+      },
+      "attributed": {
+        "both_top2_pct": 100.0,
+        "both_top3_pct": 100.0
+      },
+      "graph": {
+        "both_top2_pct": 92.6,
+        "both_top3_pct": 96.3
+      }
+    }
+  },
+  "cases": [
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "product-db"
+      ],
+      "detect_delay_s": 0.1,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "ledger-db",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "ledger-db",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "edge",
+            "auth"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "inventory"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "cpu",
+        "memleak"
+      ],
+      "truth": [
+        "orders",
+        "search"
+      ],
+      "detect_delay_s": 3.4,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "search",
+            "catalog",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "search",
+            "orders",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "search",
+            "orders",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "orders",
+            "search",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "cdn-meta",
+        "identity-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "auth",
+            "cdn-meta"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "auth",
+            "cdn-meta"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "cdn-meta",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "cdn-meta",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "payments"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "cdn-meta",
+            "search-index"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "edge",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 12.3,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "auth"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "auth"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "auth"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "payments"
+      ],
+      "detect_delay_s": 0.3,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "ledger-db",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "payments",
+            "ledger-db",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 2.7,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "search",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "search",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "edge",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "catalog"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "catalog"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "catalog"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "catalog",
+            "fraud",
+            "pricing"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "catalog",
+            "edge",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "cpu",
+        "memleak"
+      ],
+      "truth": [
+        "ledger-db",
+        "pricing"
+      ],
+      "detect_delay_s": 0.6,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "pricing",
+            "inventory"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "pricing",
+            "inventory"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "ledger-db",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "search-index"
+      ],
+      "detect_delay_s": 0.3,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "search",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "search",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "fraud",
+            "product-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "search",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "latency",
+        "error"
+      ],
+      "truth": [
+        "catalog",
+        "orders"
+      ],
+      "detect_delay_s": 1.7,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "catalog"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "catalog"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "orders",
+            "catalog",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "orders",
+            "catalog",
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "cpu",
+        "memleak"
+      ],
+      "truth": [
+        "cdn-meta",
+        "product-db"
+      ],
+      "detect_delay_s": 0.7,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "product-db",
+            "inventory"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "product-db",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "product-db",
+            "payments"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "product-db",
+            "cdn-meta",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "product-db",
+        "warehouse-cache"
+      ],
+      "detect_delay_s": 0.1,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "product-db",
+            "inventory"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "product-db",
+            "inventory"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "product-db",
+            "pricing"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "product-db",
+            "warehouse-cache",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "recommender"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "ledger-db"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "ledger-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "ledger-db",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "cpu"
+      ],
+      "truth": [
+        "product-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "search"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "edge",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "pricing",
+        "recommender"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "pricing",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "pricing",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "pricing",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "catalog",
+        "ledger-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "catalog"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "ledger-db",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "ledger-db",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "edge",
+            "ledger-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 24.1,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "identity-db",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "product-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "inventory",
+            "pricing",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "inventory",
+            "pricing",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "warehouse-cache",
+            "cdn-meta"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "pricing",
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "edge"
+      ],
+      "detect_delay_s": 0.2,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "fraud",
+            "search-index",
+            "identity-db"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "fraud",
+            "search-index"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "fraud",
+            "search-index"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "auth",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "search-index"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "search-index",
+            "search"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "search-index",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "recommender",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "product-db"
+      ],
+      "detect_delay_s": 7.9,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "ledger-db",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "ledger-db",
+            "payments"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "edge",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "cdn-meta",
+        "payments"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "cdn-meta",
+            "edge",
+            "catalog"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "payments",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "payments",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "payments",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "catalog"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "cpu",
+        "memleak"
+      ],
+      "truth": [
+        "search-index",
+        "token-cache"
+      ],
+      "detect_delay_s": 8.9,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "search-index",
+            "token-cache",
+            "search"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "search-index",
+            "token-cache",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "search-index",
+            "token-cache",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "search-index",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "cdn-meta"
+      ],
+      "detect_delay_s": 0.2,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "edge",
+            "catalog"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "edge",
+            "catalog"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "payments",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "payments",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "latency",
+        "error"
+      ],
+      "truth": [
+        "pricing",
+        "warehouse-cache"
+      ],
+      "detect_delay_s": 0.6,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "warehouse-cache",
+            "inventory"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "warehouse-cache",
+            "inventory"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "warehouse-cache",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "warehouse-cache",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "cpu"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 12.5,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "pricing",
+            "fraud"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "search"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "search"
+      ],
+      "detect_delay_s": 10.6,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search",
+            "catalog",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search",
+            "pricing",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search",
+            "pricing",
+            "edge"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search",
+            "edge",
+            "search-index"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "feature-store",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "feature-store",
+            "pricing"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "latency",
+        "error"
+      ],
+      "truth": [
+        "ledger-db",
+        "token-cache"
+      ],
+      "detect_delay_s": 11.4,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "payments",
+            "ledger-db"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "payments",
+            "ledger-db"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "ledger-db",
+            "pricing"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "ledger-db",
+            "pricing"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "cpu"
+      ],
+      "truth": [
+        "recommender"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "ledger-db"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "ledger-db",
+            "warehouse-cache"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "ledger-db",
+            "warehouse-cache"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "pricing"
+      ],
+      "detect_delay_s": 25.3,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "auth",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "auth",
+            "search"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "auth",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "token-cache"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "auth",
+            "fraud"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "auth",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "token-cache",
+            "recommender",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "identity-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "auth",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "ledger-db",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "ledger-db",
+            "orders"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "orders",
+            "auth"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "auth",
+        "fraud"
+      ],
+      "detect_delay_s": 1.3,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "fraud",
+            "payments"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "fraud",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "fraud",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "fraud",
+            "identity-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "memleak",
+        "dep_fail"
+      ],
+      "truth": [
+        "auth",
+        "recommender"
+      ],
+      "detect_delay_s": 4.5,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "edge",
+            "recommender"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "recommender",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "recommender",
+            "inventory"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "recommender",
+            "identity-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "orders"
+      ],
+      "detect_delay_s": 3.8,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "fraud"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "auth",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "auth",
+            "search"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "edge"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "identity-db",
+            "auth"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "identity-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "identity-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "recommender",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "pricing"
+      ],
+      "detect_delay_s": 28.5,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "recommender",
+            "ledger-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "recommender",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "recommender",
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "ledger-db",
+        "warehouse-cache"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "ledger-db",
+            "inventory"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "ledger-db",
+            "inventory"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "ledger-db",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "ledger-db",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "search-index"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "search-index",
+            "search"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "search-index",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "recommender",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "recommender",
+            "auth"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "cpu",
+        "memleak"
+      ],
+      "truth": [
+        "auth",
+        "pricing"
+      ],
+      "detect_delay_s": 9.5,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "auth",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "pricing",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "pricing",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "auth",
+            "pricing",
+            "identity-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "auth"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "auth",
+            "edge",
+            "fraud"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "auth",
+            "edge",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "auth",
+            "fraud",
+            "pricing"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "auth",
+            "identity-db",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 1.7,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "edge",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "inventory",
+        "search-index"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "inventory",
+            "edge",
+            "search-index"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "inventory",
+            "edge",
+            "search-index"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "inventory",
+            "search-index",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "inventory",
+            "search-index",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "memleak",
+        "dep_fail"
+      ],
+      "truth": [
+        "identity-db",
+        "recommender"
+      ],
+      "detect_delay_s": 3.1,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "identity-db"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "edge",
+            "identity-db"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "identity-db",
+            "search"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "identity-db",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "pricing"
+      ],
+      "detect_delay_s": 1.5,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "fraud",
+            "search"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "fraud",
+            "search"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "fraud",
+            "feature-store"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "orders"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "fraud"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "recommender",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "fraud",
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "memleak",
+        "dep_fail"
+      ],
+      "truth": [
+        "payments",
+        "warehouse-cache"
+      ],
+      "detect_delay_s": 5.2,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "warehouse-cache",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "warehouse-cache",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "warehouse-cache",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "warehouse-cache",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "edge"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "identity-db",
+            "ledger-db",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "identity-db",
+            "ledger-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "identity-db",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "auth",
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "pricing"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "payments"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "recommender",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "cpu"
+      ],
+      "truth": [
+        "edge"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 0.0,
+          "ranked": [
+            "identity-db",
+            "pricing",
+            "inventory"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "identity-db",
+            "inventory"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "identity-db",
+            "inventory"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "edge",
+            "orders",
+            "auth"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "identity-db"
+      ],
+      "detect_delay_s": 27.9,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "auth",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "fraud",
+            "product-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "fraud",
+            "product-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "edge",
+            "product-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "catalog",
+        "payments"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "orders",
+            "catalog"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "payments",
+            "catalog",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "payments",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "cdn-meta",
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "cdn-meta",
+            "edge",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "cdn-meta",
+            "edge",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "feature-store",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "cdn-meta",
+            "feature-store",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "product-db"
+      ],
+      "detect_delay_s": 5.6,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "pricing"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "fraud",
+            "recommender"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "fraud",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "product-db",
+            "edge",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "catalog"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "catalog",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "catalog",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "catalog",
+            "recommender",
+            "search-index"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "catalog",
+            "search",
+            "cdn-meta"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 5.9,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "search",
+            "auth"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "search",
+            "auth"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "auth",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "fraud"
+      ],
+      "detect_delay_s": 0.8,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "payments",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "search-index",
+            "identity-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "recommender",
+            "search-index"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "cpu"
+      ],
+      "truth": [
+        "fraud"
+      ],
+      "detect_delay_s": 0.3,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "recommender",
+            "search-index"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "recommender",
+            "search-index"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "fraud",
+            "recommender",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "memleak",
+        "dep_fail"
+      ],
+      "truth": [
+        "recommender",
+        "token-cache"
+      ],
+      "detect_delay_s": 4.7,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "token-cache",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "token-cache",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "token-cache",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "recommender",
+            "token-cache",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "catalog",
+        "fraud"
+      ],
+      "detect_delay_s": 0.2,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "fraud",
+            "payments"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "fraud",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "catalog",
+            "fraud",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "catalog",
+            "cdn-meta",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "pricing"
+      ],
+      "detect_delay_s": 18.2,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "recommender",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "recommender",
+            "edge"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "pricing",
+            "edge",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "ledger-db",
+        "pricing"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "ledger-db"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "ledger-db"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "ledger-db",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "ledger-db",
+            "catalog"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "identity-db",
+        "orders"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "auth",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "orders",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "identity-db",
+            "orders",
+            "payments"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "orders",
+            "identity-db",
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "inventory"
+      ],
+      "detect_delay_s": 30.8,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "pricing",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "pricing",
+            "payments"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "inventory",
+            "auth",
+            "product-db"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "search-index"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "search",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "search",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "pricing",
+            "orders"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "search-index",
+            "pricing",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "latency"
+      ],
+      "truth": [
+        "ledger-db"
+      ],
+      "detect_delay_s": 6.7,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "payments",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "fraud",
+            "identity-db"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "fraud",
+            "identity-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "ledger-db",
+            "auth",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "error"
+      ],
+      "truth": [
+        "warehouse-cache"
+      ],
+      "detect_delay_s": 0.6,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "inventory",
+            "orders"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "inventory",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "pricing",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "warehouse-cache",
+            "pricing",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "dep_fail",
+        "latency"
+      ],
+      "truth": [
+        "payments",
+        "pricing"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "orders",
+            "payments"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "payments",
+            "recommender"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "pricing",
+            "payments",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 2,
+      "kinds": [
+        "error",
+        "cpu"
+      ],
+      "truth": [
+        "feature-store",
+        "product-db"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "product-db",
+            "inventory",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "both_top2": 0.0,
+          "both_top3": 0.0,
+          "ranked": [
+            "product-db",
+            "edge",
+            "orders"
+          ]
+        },
+        "attributed": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "product-db",
+            "feature-store",
+            "fraud"
+          ]
+        },
+        "graph": {
+          "both_top2": 1.0,
+          "both_top3": 1.0,
+          "ranked": [
+            "product-db",
+            "feature-store",
+            "fraud"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "memleak"
+      ],
+      "truth": [
+        "orders"
+      ],
+      "detect_delay_s": 20.1,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "edge",
+            "ledger-db"
+          ]
+        },
+        "self_time": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "recommender",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "recommender",
+            "ledger-db"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "orders",
+            "payments",
+            "recommender"
+          ]
+        }
+      }
+    },
+    {
+      "group_size": 1,
+      "kinds": [
+        "dep_fail"
+      ],
+      "truth": [
+        "feature-store"
+      ],
+      "detect_delay_s": 0.0,
+      "methods": {
+        "naive_inclusive": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "feature-store",
+            "edge"
+          ]
+        },
+        "self_time": {
+          "top1": 0.0,
+          "top3": 1.0,
+          "ranked": [
+            "recommender",
+            "feature-store",
+            "edge"
+          ]
+        },
+        "attributed": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "pricing",
+            "catalog"
+          ]
+        },
+        "graph": {
+          "top1": 1.0,
+          "top3": 1.0,
+          "ranked": [
+            "feature-store",
+            "pricing",
+            "catalog"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+# Service topology under test.
+#
+# `observable: false` marks a node that emits no spans of its own — you only ever
+# see it through the client-side span of whoever called it. Postgres and Redis are
+# the realistic case, and they are the nodes where self-time localization fails,
+# because the latency shows up as the *caller's* self-time.
+
+services:
+  gateway:
+    kind: dotnet
+    calls: [orders, recommender]
+    base_latency_ms: 4.0
+    latency_sigma: 0.35
+
+  orders:
+    kind: dotnet
+    calls: [payments, inventory]
+    base_latency_ms: 6.0
+    latency_sigma: 0.40
+
+  payments:
+    kind: dotnet
+    calls: [ledger]
+    base_latency_ms: 8.0
+    latency_sigma: 0.45
+
+  inventory:
+    kind: dotnet
+    calls: [cache]
+    base_latency_ms: 5.0
+    latency_sigma: 0.35
+
+  recommender:
+    kind: python
+    calls: [inventory]
+    base_latency_ms: 22.0
+    latency_sigma: 0.55
+
+  ledger:
+    kind: postgres
+    observable: false
+    calls: []
+    base_latency_ms: 9.0
+    latency_sigma: 0.50
+
+  cache:
+    kind: redis
+    observable: false
+    calls: []
+    base_latency_ms: 1.2
+    latency_sigma: 0.30
+
+entrypoints: [gateway]
+
+# Baseline error rate every service carries even when healthy. Keeps the anomaly
+# detector honest — a detector that fires on a single stray error is useless.
+base_error_rate: 0.002
+
+# Probability a callee's error surfaces as an error on the caller's span.
+# Below 1.0 because real services retry, fall back, and degrade gracefully.
+error_propagation: 0.85

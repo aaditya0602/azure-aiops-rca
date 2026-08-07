@@ -1,0 +1,134 @@
+# 18-node topology with SHARED DEPENDENCIES, which is the property that makes
+# localization non-trivial.
+#
+# In a tree, blame propagates up exactly one path and simple severity ranking
+# finds the culprit. Real systems are not trees: product-db is called by four
+# services, feature-store by three, token-cache by two. One fault in product-db
+# lights up catalog, search, inventory, pricing, orders and edge -- six services
+# across subtrees that look unrelated -- and the method has to work out that the
+# single common dependency downstream of all of them is the cause.
+#
+# `observable: false` marks infrastructure that emits no server span of its own.
+# It is visible only through the caller's client span, exactly as Postgres, Redis
+# and a managed search index appear in real OpenTelemetry traces. Eight of the
+# eighteen nodes are like this.
+
+services:
+  # --- entrypoint ---
+  edge:
+    kind: dotnet
+    calls: [auth, catalog, orders, recommender]
+    base_latency_ms: 3.0
+    latency_sigma: 0.30
+
+  # --- identity ---
+  auth:
+    kind: dotnet
+    calls: [identity-db, token-cache]
+    base_latency_ms: 4.0
+    latency_sigma: 0.35
+  identity-db:
+    kind: postgres
+    observable: false
+    calls: []
+    base_latency_ms: 7.0
+    latency_sigma: 0.45
+  token-cache:            # shared: auth, fraud
+    kind: redis
+    observable: false
+    calls: []
+    base_latency_ms: 0.9
+    latency_sigma: 0.30
+
+  # --- catalog / search ---
+  catalog:                # shared: edge, recommender
+    kind: dotnet
+    calls: [search, product-db, cdn-meta]
+    base_latency_ms: 5.0
+    latency_sigma: 0.40
+  search:
+    kind: dotnet
+    calls: [search-index, product-db]
+    base_latency_ms: 9.0
+    latency_sigma: 0.50
+  search-index:
+    kind: opensearch
+    observable: false
+    calls: []
+    base_latency_ms: 14.0
+    latency_sigma: 0.55
+  product-db:             # shared: catalog, search, inventory, pricing
+    kind: postgres
+    observable: false
+    calls: []
+    base_latency_ms: 6.0
+    latency_sigma: 0.45
+  cdn-meta:
+    kind: http
+    observable: false
+    calls: []
+    base_latency_ms: 2.5
+    latency_sigma: 0.40
+
+  # --- order path ---
+  orders:
+    kind: dotnet
+    calls: [payments, inventory, pricing]
+    base_latency_ms: 6.0
+    latency_sigma: 0.40
+  payments:
+    kind: dotnet
+    calls: [ledger-db, fraud]
+    base_latency_ms: 7.0
+    latency_sigma: 0.45
+  ledger-db:
+    kind: postgres
+    observable: false
+    calls: []
+    base_latency_ms: 8.0
+    latency_sigma: 0.50
+  fraud:
+    kind: python
+    calls: [feature-store, token-cache]
+    base_latency_ms: 18.0
+    latency_sigma: 0.55
+  feature-store:          # shared: fraud, pricing, recommender
+    kind: redis
+    observable: false
+    calls: []
+    base_latency_ms: 1.4
+    latency_sigma: 0.35
+  inventory:
+    kind: dotnet
+    calls: [product-db, warehouse-cache]
+    base_latency_ms: 5.0
+    latency_sigma: 0.35
+  warehouse-cache:
+    kind: redis
+    observable: false
+    calls: []
+    base_latency_ms: 1.1
+    latency_sigma: 0.30
+  pricing:
+    kind: dotnet
+    calls: [feature-store, product-db]
+    base_latency_ms: 6.5
+    latency_sigma: 0.40
+
+  # --- recommendations ---
+  recommender:
+    kind: python
+    calls: [feature-store, catalog]
+    base_latency_ms: 20.0
+    latency_sigma: 0.55
+
+entrypoints: [edge]
+
+# Baseline error rate every service carries when healthy. Keeps the detector
+# honest -- one that fires on a single stray error is useless.
+base_error_rate: 0.002
+
+# Probability a callee's error surfaces as an error on the caller's span. Below
+# 1.0 because real services retry, fall back and degrade rather than always
+# failing outright.
+error_propagation: 0.85
