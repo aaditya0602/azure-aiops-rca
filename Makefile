@@ -82,10 +82,19 @@ down:
 logs:
 	docker compose logs -f --tail=50
 
+REAL_PORTS = gateway=http://localhost:8080,orders=http://localhost:8081,\
+payments=http://localhost:8082,inventory=http://localhost:8083,\
+ledger=http://localhost:8084,cache=http://localhost:8085,\
+recommender=http://localhost:8086
+
+# Load and fault injection run concurrently: the injector creates the incidents
+# that the load makes visible.
 real-scenario:
-	$(PY) harness/loadgen.py --rps 25 --duration 1200 --seed $(SEED) & \
+	rm -f data/otlp/otlp-spans.jsonl
+	$(PY) harness/loadgen.py --rps 25 --duration 900 --seed $(SEED) & \
 	$(PY) harness/injector.py --topology topology/small.yaml \
-		--ports "gateway=http://localhost:8080" --groups 20 --seed $(SEED); \
+		--ports "$(REAL_PORTS)" --groups 14 --fault-len 30 --quiet 15 \
+		--seed $(SEED); \
 	wait
 
 real-eval:

@@ -42,6 +42,8 @@ services:
     ports:
       - "8080:8080"
 
+  # Every service publishes a host port so harness/injector.py can POST to its
+  # /admin/fault from outside the compose network. Only the gateway receives load.
   orders:
     <<: *node
     environment:
@@ -50,6 +52,8 @@ services:
       BASE_LATENCY_MS: "6.0"
       LATENCY_SIGMA: "0.40"
       DOWNSTREAM: "payments=http://payments:8080,inventory=http://inventory:8080"
+    ports:
+      - "8081:8080"
 
   payments:
     <<: *node
@@ -59,6 +63,8 @@ services:
       BASE_LATENCY_MS: "8.0"
       LATENCY_SIGMA: "0.45"
       DOWNSTREAM: "ledger=http://ledger:8080"
+    ports:
+      - "8082:8080"
 
   inventory:
     <<: *node
@@ -68,6 +74,8 @@ services:
       BASE_LATENCY_MS: "5.0"
       LATENCY_SIGMA: "0.35"
       DOWNSTREAM: "cache=http://cache:8080"
+    ports:
+      - "8083:8080"
 
   # --- uninstrumented stand-ins: no server spans of their own ---
   ledger:
@@ -79,6 +87,8 @@ services:
       LATENCY_SIGMA: "0.50"
       EMIT_SERVER_SPANS: "false"
       DOWNSTREAM: ""
+    ports:
+      - "8084:8080"
 
   cache:
     <<: *node
@@ -89,6 +99,8 @@ services:
       LATENCY_SIGMA: "0.30"
       EMIT_SERVER_SPANS: "false"
       DOWNSTREAM: ""
+    ports:
+      - "8085:8080"
 
   # --- Python node, so traces cross a language boundary ---
   recommender:
@@ -106,3 +118,5 @@ services:
       otel-collector:
         condition: service_started
     restart: unless-stopped
+    ports:
+      - "8086:8080"
