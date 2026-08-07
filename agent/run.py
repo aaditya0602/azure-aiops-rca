@@ -43,6 +43,9 @@ def main() -> None:
     ap.add_argument("--limit", type=int, default=5,
                     help="triage at most this many incidents (each is an LLM call)")
     ap.add_argument("--out-dir", default="eval/results/triage")
+    ap.add_argument("--require-triaged", type=int, default=None,
+                    help="exit 1 unless at least N incidents triaged with no provider "
+                         "error. Used by CI to verify cassette replay end to end.")
     args = ap.parse_args()
 
     topo = Topology.load(args.topology)
@@ -105,6 +108,26 @@ def main() -> None:
     if errored and not records:
         print("no incident was triaged; every provider call failed")
         raise SystemExit(1)
+
+    if args.require_triaged is not None:
+        problems = []
+        if len(records) < args.require_triaged:
+            problems.append(f"triaged {len(records)} < required {args.require_triaged}")
+        if errored:
+            problems.append(f"{errored} provider errors")
+        # A grounded proposal names a service the ranker actually offered. The gate
+        # enforces this too; asserting it here catches a cassette recorded against
+        # a different prompt, which would otherwise replay silently.
+        for n, rec in enumerate(records):
+            root = (rec.get("proposal") or {}).get("root_cause")
+            if root and root not in rec["candidates"]:
+                problems.append(f"incident {n}: {root!r} not in candidates")
+        if problems:
+            for p in problems:
+                print(f"FAIL: {p}")
+            raise SystemExit(1)
+        print(f"PASS: {len(records)} incidents triaged, no provider errors, "
+              f"all proposals grounded in the ranker's candidates")
 
 
 if __name__ == "__main__":

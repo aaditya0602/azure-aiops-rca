@@ -49,10 +49,24 @@ test:
 	$(PY) -m pytest -q tests/
 
 # Triage the detected incidents. Offline by default (cassette replay).
-# Live: make triage PROVIDER=zai   — needs ZAI_API_KEY.
+# Live: make triage PROVIDER=azure_foundry  — needs AZURE_AI_* env vars.
 PROVIDER ?= cassette
 triage:
 	$(PY) agent/run.py --provider $(PROVIDER) --threshold $(THRESHOLD) --limit 5
+
+# Deterministic fixture the committed cassettes were recorded against. CI
+# regenerates it byte-identically (fixed seed) so replay hits every cassette.
+agent-fixture:
+	$(PY) harness/synth.py --topology topology/small.yaml --seed 4242 \
+		--duration 900 --rps 10 --faults 12 --quiet 15 \
+		--fault-min 25 --fault-max 35 --p-concurrent 0.25 \
+		--out-spans data/agentfix/spans.jsonl \
+		--out-labels data/agentfix/injections.jsonl
+
+# Replay the recorded cassettes offline — no key, no network.
+agent-replay: agent-fixture
+	$(PY) agent/run.py --provider cassette --topology topology/small.yaml \
+		--spans data/agentfix/spans.jsonl --limit 4 --require-triaged 4
 
 # The CI gate: unit tests, then a seeded end-to-end run that must clear both an
 # absolute accuracy floor AND a margin over the baseline. Fully offline — no

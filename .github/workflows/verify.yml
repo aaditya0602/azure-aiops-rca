@@ -42,6 +42,19 @@ jobs:
             --assert-top1 90 --assert-beats self_time:15 \
             --out eval/results/ci.json
 
+      # Replays cassettes recorded from a real Azure AI Foundry deployment against
+      # a byte-identical regenerated fixture. No key, no network: proves the agent
+      # path works and that the committed cassettes still match their prompts.
+      - name: Agent cassette replay
+        run: |
+          python harness/synth.py --topology topology/small.yaml --seed 4242 \
+            --duration 900 --rps 10 --faults 12 --quiet 15 \
+            --fault-min 25 --fault-max 35 --p-concurrent 0.25 \
+            --out-spans data/agentfix/spans.jsonl \
+            --out-labels data/agentfix/injections.jsonl
+          python agent/run.py --provider cassette --topology topology/small.yaml \
+            --spans data/agentfix/spans.jsonl --limit 4 --require-triaged 4
+
       - name: Upload eval result
         if: always()
         uses: actions/upload-artifact@v4

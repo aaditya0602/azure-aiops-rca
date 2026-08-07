@@ -47,8 +47,13 @@ class Provider:
 class OpenAICompatProvider(Provider):
     """Any endpoint exposing POST /chat/completions in the OpenAI shape."""
 
+    # Reasoning models spend a large part of their budget before emitting any
+    # content, so a budget sized for a plain chat model comes back empty with
+    # finish_reason=stop and no error. 2400 leaves room for the JSON.
+    DEFAULT_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2400"))
+
     def __init__(self, name: str, base_url: str, api_key: str, model: str,
-                 max_tokens: int = 900, temperature: float = 0.0):
+                 max_tokens: int | None = None, temperature: float = 0.0):
         if not api_key:
             raise ProviderError(
                 f"{name}: no API key. Set the provider's key env var, or use "
@@ -57,7 +62,7 @@ class OpenAICompatProvider(Provider):
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.model = model
-        self.max_tokens = max_tokens
+        self.max_tokens = max_tokens or self.DEFAULT_MAX_TOKENS
         self.temperature = temperature
 
     def complete(self, system: str, user: str) -> str:
@@ -85,9 +90,21 @@ class OpenAICompatProvider(Provider):
             raise ProviderError(f"{self.name} HTTP {r.status_code}: {r.text[:400]}")
         body = r.json()
         try:
-            return body["choices"][0]["message"]["content"]
+            choice = body["choices"][0]
+            content = choice["message"]["content"]
         except (KeyError, IndexError) as e:
             raise ProviderError(f"{self.name}: unexpected response shape: {e}") from e
+
+        if not (content or "").strip():
+            # A reasoning model that exhausted its budget returns HTTP 200 with an
+            # empty string and finish_reason=length. Silently treating that as a
+            # valid answer would look like a model that refuses to answer.
+            raise ProviderError(
+                f"{self.name}: empty content (finish_reason="
+                f"{choice.get('finish_reason')}, "
+                f"tokens={body.get('usage', {}).get('total_tokens')}). "
+                f"Raise LLM_MAX_TOKENS above {self.max_tokens}.")
+        return content
 
 
 class CassetteProvider(Provider):

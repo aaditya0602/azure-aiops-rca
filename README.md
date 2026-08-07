@@ -322,10 +322,40 @@ in-flight authorizations aren't idempotent and a restart can double-charge — p
 7 orchestration tests covering evidence assembly, fenced-JSON extraction, and
 graceful degradation when the model returns something unparseable.
 
-Providers are pluggable: **z.ai GLM** (dev default), **Azure AI Foundry**, or
-**cassette** replay of recorded responses so the pipeline is deterministic and CI
-runs with no key and no network. Cassettes are recorded from a real provider via
-`--record`; they are never hand-written. Keys are read from the environment only.
+Providers are pluggable: **Azure AI Foundry** (`gpt-oss-120b`, what the committed
+cassettes were recorded against), **z.ai GLM**, or **cassette** replay so the
+pipeline is deterministic and CI runs with no key and no network. Cassettes are
+recorded from a real provider via `--record`; they are never hand-written. Keys are
+read from the environment only.
+
+`make agent-replay` regenerates a byte-identical fixture (fixed seed) and replays
+the cassettes offline, asserting every proposal is grounded in the ranker's
+candidates. CI runs it on every push.
+
+### What the real model actually did
+
+Recorded against Azure AI Foundry on four detected incidents. The reasoning is
+grounded — every proposal cites numbers from the evidence table, and on the
+payments incident the model wrote that errors *"originate within payments itself
+rather than downstream services"*, which is the `err_own` feature being read
+correctly:
+
+| incident | candidates | chose | actions |
+|---|---|---|---|
+| 0 | recommender, orders, ledger | recommender (self 353ms vs 27ms baseline) | none |
+| 1 | gateway, payments, ledger | gateway | none |
+| 2 | ledger, recommender, payments | ledger | none |
+| 3 | gateway, recommender, inventory | gateway | none |
+
+**All four proposed no action — including the `ledger` incident, which has a
+runbook.** That is the conservative behaviour the prompt asks for, but the reason
+is a design gap worth naming: the evidence table contains no
+precondition-observable facts (no replica lag, no eviction rate, no deploy
+history), so the model is *structurally incapable* of legitimately claiming a
+precondition, and therefore of ever getting an action approved. The gate's refusal
+paths are exercised by 14 unit tests, not by real model output. Closing this
+properly means feeding real precondition signals into the evidence — not loosening
+the gate.
 
 Each triage also emits a proposed **detection rule** aimed at whichever signal
 actually moved, closing the loop: the generic entrypoint threshold found this
@@ -395,6 +425,12 @@ Stated plainly, because a reviewer will find these anyway:
 - **No agent accuracy claim.** The gate's refusal logic is tested; the quality of
   the model's *reasoning* is not measured, and I'd want an LLM-judge eval with
   human-labelled incidents before claiming anything there.
+- **The agent can never get an action approved as built.** No precondition data
+  reaches its context, so every real triage correctly ends at diagnosis-only. The
+  gate is verified by unit tests, not by live refusals.
+- **Azure for Students blocks several things this project would otherwise use:**
+  ACR Tasks (server-side image builds) and all OpenAI-family model quota (limit 0).
+  `gpt-oss-120b` had quota, so that is what the agent runs on.
 
 ## Layout
 

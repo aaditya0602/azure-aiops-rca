@@ -1,1 +1,434 @@
-[]
+[
+  {
+    "incident": {
+      "b_start": 3,
+      "b_end": 8,
+      "t_start_ms": 15040.819,
+      "t_end_ms": 45040.819
+    },
+    "candidates": [
+      "recommender",
+      "orders",
+      "ledger",
+      "payments"
+    ],
+    "evidence": {
+      "window_s": [
+        15.0,
+        45.0
+      ],
+      "signals": [
+        {
+          "service": "recommender",
+          "rca_score": 2.875788,
+          "self_ms": 162.358,
+          "self_ms_baseline": 25.685,
+          "self_severity_log2": 2.88,
+          "inclusive_ms": 168.923,
+          "error_rate": 0.007,
+          "own_error_rate": 0.003,
+          "own_error_severity": 0.03,
+          "requests": 299
+        },
+        {
+          "service": "orders",
+          "rca_score": 0.153007,
+          "self_ms": 6.774,
+          "self_ms_baseline": 6.456,
+          "self_severity_log2": 0.15,
+          "inclusive_ms": 32.021,
+          "error_rate": 0.0,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 300
+        },
+        {
+          "service": "ledger",
+          "rca_score": 0.106316,
+          "self_ms": 10.002,
+          "self_ms_baseline": 10.189,
+          "self_severity_log2": 0.11,
+          "inclusive_ms": 10.002,
+          "error_rate": 0.0,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 299
+        },
+        {
+          "service": "payments",
+          "rca_score": 0.077746,
+          "self_ms": 8.821,
+          "self_ms_baseline": 8.935,
+          "self_severity_log2": 0.08,
+          "inclusive_ms": 18.823,
+          "error_rate": 0.0,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 299
+        }
+      ],
+      "dependencies": {
+        "recommender": [
+          "inventory"
+        ],
+        "orders": [
+          "inventory",
+          "payments"
+        ],
+        "ledger": [],
+        "payments": [
+          "ledger"
+        ]
+      }
+    },
+    "proposal": {
+      "root_cause": "recommender",
+      "confidence": "high",
+      "reasoning": "Recommender shows a large RCA score (2.88), self latency 162\u202fms vs baseline 25\u202fms, and elevated error rates, while other services have near\u2011zero scores and no errors.",
+      "runbook_id": null,
+      "actions": []
+    },
+    "verdict": {
+      "allowed_actions": [],
+      "refusals": [],
+      "diagnosis_only": true,
+      "errors": []
+    },
+    "postmortem": "# Incident postmortem \u2014 recommender\n\n**Window:** 15.0s \u2013 45.0s\n**Localized to:** recommender (confidence: high)\n\n## Evidence\n- `recommender` self 162.358ms vs baseline 25.685ms (severity 2.88), own-error 0.003, 299 requests\n- `orders` self 6.774ms vs baseline 6.456ms (severity 0.15), own-error 0.0, 300 requests\n- `ledger` self 10.002ms vs baseline 10.189ms (severity 0.11), own-error 0.0, 299 requests\n- `payments` self 8.821ms vs baseline 8.935ms (severity 0.08), own-error 0.0, 299 requests\n\n## Analysis\nRecommender shows a large RCA score (2.88), self latency 162\u202fms vs baseline 25\u202fms, and elevated error rates, while other services have near\u2011zero scores and no errors.\n\n## Actions\n- Diagnosis only; no action proposed.\n\n## Follow-up\nAdd a detection rule on `recommender` so this is caught without waiting for the entrypoint symptom.",
+    "detection_rule": {
+      "service": "recommender",
+      "signal": "lat_self",
+      "baseline": 25.6852,
+      "threshold": 84.938,
+      "unit": "ms",
+      "comparison": "mean over 5m window",
+      "observed_severity_log2": 2.88,
+      "rationale": "recommender lat_self reached severity 2.88 (log2 scale) during this incident; alerting on lat_self directly detects it without waiting for the entrypoint symptom to cross its threshold."
+    },
+    "parse_error": null
+  },
+  {
+    "incident": {
+      "b_start": 11,
+      "b_end": 17,
+      "t_start_ms": 55040.819,
+      "t_end_ms": 90040.819
+    },
+    "candidates": [
+      "gateway",
+      "payments",
+      "ledger",
+      "orders"
+    ],
+    "evidence": {
+      "window_s": [
+        55.0,
+        90.0
+      ],
+      "signals": [
+        {
+          "service": "gateway",
+          "rca_score": 0.91427,
+          "self_ms": 4.133,
+          "self_ms_baseline": 4.232,
+          "self_severity_log2": 0.07,
+          "inclusive_ms": 45.074,
+          "error_rate": 0.377,
+          "own_error_rate": 0.363,
+          "own_error_severity": 0.91,
+          "requests": 350
+        },
+        {
+          "service": "payments",
+          "rca_score": 0.209308,
+          "self_ms": 9.045,
+          "self_ms_baseline": 8.935,
+          "self_severity_log2": 0.21,
+          "inclusive_ms": 19.388,
+          "error_rate": 0.005,
+          "own_error_rate": 0.005,
+          "own_error_severity": 0.05,
+          "requests": 223
+        },
+        {
+          "service": "ledger",
+          "rca_score": 0.203757,
+          "self_ms": 10.387,
+          "self_ms_baseline": 10.189,
+          "self_severity_log2": 0.2,
+          "inclusive_ms": 10.387,
+          "error_rate": 0.0,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 223
+        },
+        {
+          "service": "orders",
+          "rca_score": 0.185673,
+          "self_ms": 6.45,
+          "self_ms_baseline": 6.456,
+          "self_severity_log2": 0.19,
+          "inclusive_ms": 32.431,
+          "error_rate": 0.008,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 223
+        }
+      ],
+      "dependencies": {
+        "gateway": [
+          "orders",
+          "recommender"
+        ],
+        "payments": [
+          "ledger"
+        ],
+        "ledger": [],
+        "orders": [
+          "inventory",
+          "payments"
+        ]
+      }
+    },
+    "proposal": {
+      "root_cause": "gateway",
+      "confidence": "high",
+      "reasoning": "gateway has the highest rca_score (0.914) and a high own_error_rate (0.363) with own_error_severity 0.91, indicating many errors originate within the service itself; its inclusive latency (45.074\u202fms) is also markedly elevated while self latency remains near baseline.",
+      "runbook_id": null,
+      "actions": []
+    },
+    "verdict": {
+      "allowed_actions": [],
+      "refusals": [],
+      "diagnosis_only": true,
+      "errors": []
+    },
+    "postmortem": "# Incident postmortem \u2014 gateway\n\n**Window:** 55.0s \u2013 90.0s\n**Localized to:** gateway (confidence: high)\n\n## Evidence\n- `gateway` self 4.133ms vs baseline 4.232ms (severity 0.07), own-error 0.363, 350 requests\n- `payments` self 9.045ms vs baseline 8.935ms (severity 0.21), own-error 0.005, 223 requests\n- `ledger` self 10.387ms vs baseline 10.189ms (severity 0.2), own-error 0.0, 223 requests\n- `orders` self 6.45ms vs baseline 6.456ms (severity 0.19), own-error 0.0, 223 requests\n\n## Analysis\ngateway has the highest rca_score (0.914) and a high own_error_rate (0.363) with own_error_severity 0.91, indicating many errors originate within the service itself; its inclusive latency (45.074\u202fms) is also markedly elevated while self latency remains near baseline.\n\n## Actions\n- Diagnosis only; no action proposed.\n\n## Follow-up\nAdd a detection rule on `gateway` so this is caught without waiting for the entrypoint symptom.",
+    "detection_rule": {
+      "service": "gateway",
+      "signal": "err_own",
+      "baseline": 0.0,
+      "threshold": 0.2653,
+      "unit": "rate",
+      "comparison": "mean over 5m window",
+      "observed_severity_log2": 0.91,
+      "rationale": "gateway err_own reached severity 0.91 (log2 scale) during this incident; alerting on err_own directly detects it without waiting for the entrypoint symptom to cross its threshold."
+    },
+    "parse_error": null
+  },
+  {
+    "incident": {
+      "b_start": 20,
+      "b_end": 26,
+      "t_start_ms": 100040.819,
+      "t_end_ms": 135040.81900000002
+    },
+    "candidates": [
+      "ledger",
+      "recommender",
+      "payments",
+      "inventory"
+    ],
+    "evidence": {
+      "window_s": [
+        100.0,
+        135.0
+      ],
+      "signals": [
+        {
+          "service": "ledger",
+          "rca_score": 2.602318,
+          "self_ms": 46.846,
+          "self_ms_baseline": 10.189,
+          "self_severity_log2": 2.6,
+          "inclusive_ms": 46.846,
+          "error_rate": 0.003,
+          "own_error_rate": 0.003,
+          "own_error_severity": 0.03,
+          "requests": 349
+        },
+        {
+          "service": "recommender",
+          "rca_score": 0.220686,
+          "self_ms": 27.496,
+          "self_ms_baseline": 25.685,
+          "self_severity_log2": 0.22,
+          "inclusive_ms": 34.042,
+          "error_rate": 0.003,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 349
+        },
+        {
+          "service": "payments",
+          "rca_score": 0.14278,
+          "self_ms": 9.396,
+          "self_ms_baseline": 8.935,
+          "self_severity_log2": 0.14,
+          "inclusive_ms": 56.109,
+          "error_rate": 0.003,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 350
+        },
+        {
+          "service": "inventory",
+          "rca_score": 0.087981,
+          "self_ms": 5.246,
+          "self_ms_baseline": 5.338,
+          "self_severity_log2": 0.09,
+          "inclusive_ms": 6.479,
+          "error_rate": 0.003,
+          "own_error_rate": 0.003,
+          "own_error_severity": 0.01,
+          "requests": 698
+        }
+      ],
+      "dependencies": {
+        "ledger": [],
+        "recommender": [
+          "inventory"
+        ],
+        "payments": [
+          "ledger"
+        ],
+        "inventory": [
+          "cache"
+        ]
+      }
+    },
+    "proposal": {
+      "root_cause": "ledger",
+      "confidence": "high",
+      "reasoning": "Ledger shows a 4.6x increase in self latency (46.8\u202fms vs 10.2\u202fms baseline) and the highest RCA score (2.60). Its own error rate is elevated while downstream services have normal self time, matching the latency\u2011degradation pattern.",
+      "runbook_id": null,
+      "actions": []
+    },
+    "verdict": {
+      "allowed_actions": [],
+      "refusals": [],
+      "diagnosis_only": true,
+      "errors": []
+    },
+    "postmortem": "# Incident postmortem \u2014 ledger\n\n**Window:** 100.0s \u2013 135.0s\n**Localized to:** ledger (confidence: high)\n\n## Evidence\n- `ledger` self 46.846ms vs baseline 10.189ms (severity 2.6), own-error 0.003, 349 requests\n- `recommender` self 27.496ms vs baseline 25.685ms (severity 0.22), own-error 0.0, 349 requests\n- `payments` self 9.396ms vs baseline 8.935ms (severity 0.14), own-error 0.0, 350 requests\n- `inventory` self 5.246ms vs baseline 5.338ms (severity 0.09), own-error 0.003, 698 requests\n\n## Analysis\nLedger shows a 4.6x increase in self latency (46.8\u202fms vs 10.2\u202fms baseline) and the highest RCA score (2.60). Its own error rate is elevated while downstream services have normal self time, matching the latency\u2011degradation pattern.\n\n## Actions\n- Diagnosis only; no action proposed.\n\n## Follow-up\nAdd a detection rule on `ledger` so this is caught without waiting for the entrypoint symptom.",
+    "detection_rule": {
+      "service": "ledger",
+      "signal": "lat_self",
+      "baseline": 10.1894,
+      "threshold": 30.073,
+      "unit": "ms",
+      "comparison": "mean over 5m window",
+      "observed_severity_log2": 2.6,
+      "rationale": "ledger lat_self reached severity 2.60 (log2 scale) during this incident; alerting on lat_self directly detects it without waiting for the entrypoint symptom to cross its threshold."
+    },
+    "parse_error": null
+  },
+  {
+    "incident": {
+      "b_start": 30,
+      "b_end": 35,
+      "t_start_ms": 150040.819,
+      "t_end_ms": 180040.819
+    },
+    "candidates": [
+      "gateway",
+      "recommender",
+      "inventory",
+      "ledger"
+    ],
+    "evidence": {
+      "window_s": [
+        150.0,
+        180.0
+      ],
+      "signals": [
+        {
+          "service": "gateway",
+          "rca_score": 2.910623,
+          "self_ms": 20.885,
+          "self_ms_baseline": 4.232,
+          "self_severity_log2": 2.91,
+          "inclusive_ms": 85.39,
+          "error_rate": 0.017,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 300
+        },
+        {
+          "service": "recommender",
+          "rca_score": 0.244771,
+          "self_ms": 26.612,
+          "self_ms_baseline": 25.685,
+          "self_severity_log2": 0.24,
+          "inclusive_ms": 33.044,
+          "error_rate": 0.003,
+          "own_error_rate": 0.0,
+          "own_error_severity": -0.0,
+          "requests": 296
+        },
+        {
+          "service": "inventory",
+          "rca_score": 0.072652,
+          "self_ms": 5.316,
+          "self_ms_baseline": 5.338,
+          "self_severity_log2": 0.07,
+          "inclusive_ms": 6.569,
+          "error_rate": 0.008,
+          "own_error_rate": 0.003,
+          "own_error_severity": 0.03,
+          "requests": 595
+        },
+        {
+          "service": "ledger",
+          "rca_score": 0.069596,
+          "self_ms": 10.021,
+          "self_ms_baseline": 10.189,
+          "self_severity_log2": 0.07,
+          "inclusive_ms": 10.021,
+          "error_rate": 0.003,
+          "own_error_rate": 0.003,
+          "own_error_severity": 0.03,
+          "requests": 300
+        }
+      ],
+      "dependencies": {
+        "gateway": [
+          "orders",
+          "recommender"
+        ],
+        "recommender": [
+          "inventory"
+        ],
+        "inventory": [
+          "cache"
+        ],
+        "ledger": []
+      }
+    },
+    "proposal": {
+      "root_cause": "gateway",
+      "confidence": "high",
+      "reasoning": "Gateway shows the highest RCA score (2.91) and a self latency increase from 4.232\u202fms to 20.885\u202fms, plus elevated inclusive latency (85.39\u202fms) and error rate (0.017). Other services have low scores and near\u2011baseline latencies.",
+      "runbook_id": null,
+      "actions": []
+    },
+    "verdict": {
+      "allowed_actions": [],
+      "refusals": [],
+      "diagnosis_only": true,
+      "errors": []
+    },
+    "postmortem": "# Incident postmortem \u2014 gateway\n\n**Window:** 150.0s \u2013 180.0s\n**Localized to:** gateway (confidence: high)\n\n## Evidence\n- `gateway` self 20.885ms vs baseline 4.232ms (severity 2.91), own-error 0.0, 300 requests\n- `recommender` self 26.612ms vs baseline 25.685ms (severity 0.24), own-error 0.0, 296 requests\n- `inventory` self 5.316ms vs baseline 5.338ms (severity 0.07), own-error 0.003, 595 requests\n- `ledger` self 10.021ms vs baseline 10.189ms (severity 0.07), own-error 0.003, 300 requests\n\n## Analysis\nGateway shows the highest RCA score (2.91) and a self latency increase from 4.232\u202fms to 20.885\u202fms, plus elevated inclusive latency (85.39\u202fms) and error rate (0.017). Other services have low scores and near\u2011baseline latencies.\n\n## Actions\n- Diagnosis only; no action proposed.\n\n## Follow-up\nAdd a detection rule on `gateway` so this is caught without waiting for the entrypoint symptom.",
+    "detection_rule": {
+      "service": "gateway",
+      "signal": "lat_self",
+      "baseline": 4.2324,
+      "threshold": 14.2,
+      "unit": "ms",
+      "comparison": "mean over 5m window",
+      "observed_severity_log2": 2.91,
+      "rationale": "gateway lat_self reached severity 2.91 (log2 scale) during this incident; alerting on lat_self directly detects it without waiting for the entrypoint symptom to cross its threshold."
+    },
+    "parse_error": null
+  }
+]
