@@ -89,12 +89,17 @@ recommender=http://localhost:8086
 
 # Load and fault injection run concurrently: the injector creates the incidents
 # that the load makes visible.
+#
+# The collector is RESTARTED rather than the output file deleted. Deleting it
+# while the collector holds the handle leaves the collector writing to an unlinked
+# inode, so the run silently produces no spans at all.
 real-scenario:
-	rm -f data/otlp/otlp-spans.jsonl
-	$(PY) harness/loadgen.py --rps 25 --duration 900 --seed $(SEED) & \
-	$(PY) harness/injector.py --topology topology/small.yaml \
-		--ports "$(REAL_PORTS)" --groups 14 --fault-len 30 --quiet 15 \
-		--seed $(SEED); \
+	docker compose restart otel-collector
+	sleep 5
+	$(PY) -u harness/loadgen.py --rps 25 --duration 430 --seed $(SEED) & \
+	$(PY) -u harness/injector.py --topology topology/small.yaml \
+		--ports "$(REAL_PORTS)" --groups 8 --fault-len 30 --quiet 15 \
+		--p-concurrent 0.3 --seed $(SEED); \
 	wait
 
 real-eval:
